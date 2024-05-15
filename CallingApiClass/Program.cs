@@ -2,9 +2,10 @@
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Returner mojDom = ApiClass.CallApi(ApiClass.Options.Login, typeof(Uzytkownik));
+            var postParam = new Dictionary<string, string> { { "Imie","Jan" }, { "Haslo", "MojeHaslo" } };
+            Returner mojDom = await ApiClass.CallApi(ApiClass.Options.Login, typeof(Uzytkownik), postParam);
             Console.WriteLine(mojDom.Success);
             Console.WriteLine(((Uzytkownik)mojDom.Result).Imie);
         }

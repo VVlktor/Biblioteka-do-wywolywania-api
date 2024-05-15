@@ -10,7 +10,7 @@
         {
             get {
                 if (Success)
-                    return (Type)result;
+                    return result;
                 return Activator.CreateInstance(WhatType);
             }
             set 
