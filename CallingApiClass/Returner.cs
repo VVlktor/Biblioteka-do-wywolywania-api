@@ -1,17 +1,16 @@
 ﻿namespace CallingApiClass
 {
-    public class Returner
+    public class Returner<T>
     {
         public bool Success { get; set; }
-        public Type WhatType {  get; set; }
-        public object result;
+        public T result;
 
-        public object Result
+        public T Result
         {
             get {
                 if (Success)
                     return result;
-                return Activator.CreateInstance(WhatType);
+                return (T)Activator.CreateInstance(typeof(T));
             }
             set 
             {

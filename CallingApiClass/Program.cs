@@ -5,9 +5,9 @@
         static async Task Main(string[] args)
         {
             var postParam = new Dictionary<string, string> { { "Imie","Jan" }, { "Haslo", "MojeHaslo" } };
-            Returner mojDom = await ApiClass.CallApi(ApiClass.Options.Login, typeof(Uzytkownik), postParam);
+            Returner<Uzytkownik> mojDom = await ApiClass.CallApi<Uzytkownik>(ApiClass.Options.Login, postParam);
             Console.WriteLine(mojDom.Success);
-            Console.WriteLine(((Uzytkownik)mojDom.Result).Imie);
+            Console.WriteLine(mojDom.Result.Imie);
         }
     }
 }

@@ -12,11 +12,10 @@ namespace CallingApiClass
             Invitation
         }
 
-        public static async Task<Returner> CallApi(Options option, Type typ, Dictionary<string, string> postParams)
+        public static async Task<Returner<T>> CallApi<T>(Options option, Dictionary<string, string> postParams)
         {
-            Returner returner = new Returner();
+            Returner<T> returner = new Returner<T>();
             returner.Success = true;
-            returner.WhatType = typ;
             string link;
             switch (option)
             {
@@ -45,24 +44,23 @@ namespace CallingApiClass
                 var content = await receivedData.Content.ReadAsStringAsync();
                 if (content is null)
                     throw new Exception("Nie udalo sie odebrac danych");
-                returner.Result = JsonSerializer.Deserialize(content,typ);
+                returner.Result = (T)JsonSerializer.Deserialize(content,typeof(T));
                 if (returner.Result is null)
                     throw new Exception("Dane nie poprawne");
             }
             catch(Exception e)
             {
                 returner.Success = false;
-                returner.Result = Activator.CreateInstance(typ);
+                returner.Result = (T)Activator.CreateInstance(typeof(T));
                 Console.WriteLine(e.Message);
             }
             return returner;
         }
 
-        public static async Task<Returner> CallApi(string link, Type typ, Dictionary<string, string> postParams)
+        public static async Task<Returner<T>> CallApi<T>(string link, Type typ, Dictionary<string, string> postParams)
         {
-            Returner returner = new Returner();
+            Returner<T> returner = new Returner<T>();
             returner.Success = true;
-            returner.WhatType = typ;
             try
             {
                 HttpClient client = new HttpClient();
@@ -71,14 +69,14 @@ namespace CallingApiClass
                 var content = await receivedData.Content.ReadAsStringAsync();
                 if (content is null)
                     throw new Exception("Nie udalo sie odebrac danych");
-                returner.Result = JsonSerializer.Deserialize(content, typ);
+                returner.Result = (T)JsonSerializer.Deserialize(content, typeof(T));
                 if (returner.Result is null)
                     throw new Exception("Dane nie poprawne");
             }
             catch (Exception e)
             {
                 returner.Success = false;
-                returner.Result = Activator.CreateInstance(typ);
+                returner.Result = (T)Activator.CreateInstance(typeof(T));
                 Console.WriteLine(e.Message);
             }
             return returner;
